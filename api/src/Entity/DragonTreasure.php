@@ -8,7 +8,9 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DragonTreasureRepository::class)]
-#[ApiResource(mercure: true)]
+#[ApiResource(
+    description: "Este soy yo siguiendo el Tutorial de API Platform",
+)]
 class DragonTreasure
 {
     #[ORM\Id]
