@@ -6,10 +6,24 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\DragonTreasureRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 
 #[ORM\Entity(repositoryClass: DragonTreasureRepository::class)]
 #[ApiResource(
+    shortName: 'Treasure',
     description: "Este soy yo siguiendo el Tutorial de API Platform",
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Post(),
+        new Put(),
+        new Patch(),
+       
+    ]
 )]
 class DragonTreasure
 {
