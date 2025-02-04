@@ -12,6 +12,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use Carbon\Carbon;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: DragonTreasureRepository::class)]
 #[ApiResource(
@@ -23,8 +24,14 @@ use Carbon\Carbon;
         new Post(),
         new Put(),
         new Patch(),
-       
+    ],
+    normalizationContext: [
+        'groups' => ['treasure:read'],
+    ],
+    denormalizationContext: [
+        'groups' => ['treasure:write'],
     ]
+
 )]
 class DragonTreasure
 {
@@ -34,22 +41,26 @@ class DragonTreasure
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['treasure:read', 'treasure:write'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['treasure:read'])]
     private ?string $description = null;
 
     #[ORM\Column]
+    #[Groups(['treasure:read', 'treasure:write'])]
     private ?int $value = null;
 
     #[ORM\Column]
+    #[Groups(['treasure:read', 'treasure:write'])]
     private ?int $coolFactor = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $plunderedAt;
 
     #[ORM\Column]
-    private ?bool $isPublished = null;
+    private ?bool $isPublished = false;
 
     public function __construct()
     {
@@ -85,6 +96,14 @@ class DragonTreasure
         return $this;
     }
 
+    public function setPlunderedAt(string $plunderedAt): static
+    {
+        $this->description = $plunderedAt;
+
+        return $this;
+    }
+
+    #[Groups(['treasure:write'])]
     public function setTextDescription(string $description): static
     {
         $this->description = nl2br($description);
@@ -115,7 +134,7 @@ class DragonTreasure
 
         return $this;
     }
-
+    #[Groups(['treasure:read'])]
     public function getPlunderedAt(): ?\DateTimeImmutable
     {
         return $this->plunderedAt;
