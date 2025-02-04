@@ -89,6 +89,7 @@ class DragonTreasure
         return $this->description;
     }
 
+    #[Groups(['treasure:write'])]
     public function setDescription(string $description): static
     {
         $this->description = $description;
